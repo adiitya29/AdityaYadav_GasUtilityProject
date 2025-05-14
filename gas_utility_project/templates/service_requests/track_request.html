@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Track Your Request</title>
+</head>
+<body>
+    <h1>Track Your Service Request</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Track</button>
+    </form>
+
+    {% if requests %}
+        <h2>Matching Requests:</h2>
+        <ul>
+        {% for req in requests %}
+            <li>
+                <strong>Type:</strong> {{ req.request_type }} |
+                <strong>Status:</strong> {{ req.status }} |
+                <strong>Submitted:</strong> {{ req.submitted_at }} |
+                <strong>Resolved:</strong> {{ req.resolved_at|default:"Pending" }}
+                
+                {% if req.attachment %}
+        |           <strong>Attachment:</strong> <a href="{{ req.attachment.url }}">View File</a>
+                {% endif %}
+            </li>
+        {% empty %}
+            <p>No requests found for this email.</p>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Account Information</title>
+</head>
+<body>
+    <h1>View Your Account Info</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="email">Enter your email:</label>
+        <input type="email" name="email" required>
+        <button type="submit">View Info</button>
+    </form>
+
+    {% if name %}
+        <h2>Welcome, {{ name }}</h2>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Total Requests:</strong> {{ total }}</p>
+        <p><strong>Pending:</strong> {{ pending }}</p>
+        <p><strong>Resolved:</strong> {{ resolved }}</p>
+
+        <h3>All Requests:</h3>
+        <ul>
+            {% for req in requests %}
+                <li>{{ req.request_type }} | {{ req.status }} | {{ req.submitted_at }}</li>
+            {% endfor %}
+        </ul>
+    {% elif error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
+</html>
